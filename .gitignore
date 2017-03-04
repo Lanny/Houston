@@ -90,3 +90,4 @@ ENV/
 
 testsite/settings.py
 db.sqlite3
+*.swp
