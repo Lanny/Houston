@@ -17,9 +17,9 @@ HTTP_METHODS = ((x, x) for x in [
 
 class PageView(models.Model):
     path = models.CharField(max_length=1024)
-    query = models.CharField(max_length=1024)
+    query = models.CharField(max_length=1024, default='')
     report_time = models.DateTimeField(default=timezone.now)
 
     tt_load = models.IntegerField(null=True)
     req_time = models.IntegerField(null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)

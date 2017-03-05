@@ -1,0 +1,8 @@
+{% load static %}
+
+<script>
+  window._houston = window._houston || {};
+  window._houston.pageViewURL = "{% url 'record-page-view' %}";
+  window._houston.csrfToken = "{{ csrf_token }}";
+</script>
+<script src="{% static 'Houston/tracker.js' %}"></script>
