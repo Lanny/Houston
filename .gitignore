@@ -88,6 +88,5 @@ ENV/
 # Rope project settings
 .ropeproject
 
-testsite/settings.py
 db.sqlite3
 *.swp
