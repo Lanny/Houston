@@ -1,3 +1,7 @@
+import json
+
+from django.db.models.aggregates import Count
+from django.db.models.functions import Trunc
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 
@@ -26,3 +30,38 @@ def record_page_view(request):
 
         return HttpResponse('success', content_type='text/plain')
 
+def view_counts(request):
+    form = forms.ViewCountsForm(request.GET)
+
+    if not form.is_valid():
+        response_data = {
+            'status': 'FAILURE',
+            'errors': form.errors
+        }
+
+        return HttpResponseBadRequest(json.dumps(response_data),
+                                      content_type='application/json')
+
+    start_time = form.cleaned_data['start_time']
+    end_time = form.cleaned_data['end_time']
+    granularity = form.cleaned_data['granularity']
+
+    print granularity
+    view_counts = (PageView.objects.all()
+        .filter(report_time__gte=start_time)
+        .filter(report_time__gte=end_time)
+        .annotate(bucket=Trunc('report_time', kind=granularity))
+        .values('bucket')
+        .annotate(count=Count('bucket')))
+
+    values = []
+    for bucket in view_counts:
+        values.append({
+            'count': bucket['count'],
+            'bucket': utils.to_unix_time(bucket['bucket'])
+        })
+
+    return HttpResponse(json.dumps({
+        'status': 'SUCCESS',
+        'viewCounts': values
+    }), content_type='application/json')

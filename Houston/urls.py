@@ -20,4 +20,5 @@ from Houston import views
 
 urlpatterns = [
     url(r'^record-view$', views.record_page_view, name='record-page-view'),
+    url(r'^view-counts$', views.view_counts, name='view-counts'),
 ]
