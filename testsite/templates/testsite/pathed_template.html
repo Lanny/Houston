@@ -1,0 +1,31 @@
+{% extends 'testsite/base.html' %}
+
+{% block content %}
+  <h2>Pathed Thing</h2>
+
+  <p>
+    Here are some other things!
+  </p>
+  <ol>
+    {% for x in rand_pool %}
+      <li>
+        <a href="{% url 'pathed-view' x %}">
+          Thing {{ x }}
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+
+  <p>
+    And with query strings!
+  </p>
+  <ol>
+    {% for x in rand_pool %}
+      <li>
+        <a href="{% url 'pathed-view' x %}?foobar={{ x }}">
+          Thing {{ x }}
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}
