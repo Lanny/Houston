@@ -16,7 +16,8 @@ def record_page_view(request):
                                       content_type='text/plain')
     else:
         view = PageView(
-            path=form.cleaned_data['path'])
+            path=form.cleaned_data['path'],
+            session=Session.get_session(request))
 
         if request.user.is_authenticated():
             view.user = request.user
