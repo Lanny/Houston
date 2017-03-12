@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 from Houston import views
 
 urlpatterns = [
     url(r'^record-view$', views.record_page_view, name='record-page-view'),
     url(r'^view-counts$', views.view_counts, name='view-counts'),
+    url(r'^dashboard$',
+        TemplateView.as_view(template_name='Houston/dashboard.html'),
+        name='dashboard'),
 ]

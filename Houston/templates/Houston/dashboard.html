@@ -1,0 +1,15 @@
+{% extends "Houston/base.html" %}
+
+{% block page_name %}
+  Dashboard -
+{% endblock %}
+
+{% block content %}
+  <div class="dashboard">
+  </div>
+{% endblock %}
+
+{% block js %}                                                                  
+  {% include "Houston/require.html" with bootstrap="dashboard" %}                
+{% endblock %}     
+

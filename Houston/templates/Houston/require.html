@@ -1,0 +1,13 @@
+{% load staticfiles %}
+
+<script type="text/javascript" src="{% static 'Houston/js/require.js' %}"></script>
+<script type="text/javascript">
+  requirejs.config({
+    baseUrl: '{% static "Houston/js" %}',
+    paths: {
+    '{{ bootstrap }}': '{% static "Houston/js/"|add:bootstrap|add:".js" %}'.split('.').slice(0,-1).join('.')
+    }
+  });
+
+  requirejs(['{{ bootstrap }}'], function() {});
+</script>
