@@ -10,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='django-houston',
     version='0.1a',
-    packages=find_packages(),
+    packages=find_packages(exclude=('testsite',)),
     include_package_data=True,
     license='GPL v3.0',
     
