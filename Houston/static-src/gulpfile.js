@@ -10,7 +10,7 @@ var concat = require('gulp-concat');
 var svg = require('gulp-svg-inline-css');
 
 var staticDir = '../static',
-  jsDir = path.join(staticDir, 'js'),
+  jsDir = path.join(staticDir, 'Houston/js'),
   optimizeModules = [];
  
 gulp.task('icons', function() {
@@ -38,7 +38,7 @@ gulp.task('less', ['icons'], function() {
   stream = argv.optimize ? stream : stream.pipe(sourcemaps.write());
   stream = stream.pipe(flatten());
   stream = argv.optimize ? stream.pipe(minifyCSS()) : stream;
-  stream = stream.pipe(gulp.dest('../static/css'));
+  stream = stream.pipe(gulp.dest('../static/Houston/css'));
 
   return stream;
 });
