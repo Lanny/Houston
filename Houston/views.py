@@ -46,7 +46,6 @@ def view_counts(request):
     end_time = form.cleaned_data['end_time']
     granularity = form.cleaned_data['granularity']
 
-    print granularity
     view_counts = (PageView.objects.all()
         .filter(report_time__gte=start_time)
         .filter(report_time__gte=end_time)

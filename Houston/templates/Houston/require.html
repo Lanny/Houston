@@ -2,10 +2,16 @@
 
 <script type="text/javascript" src="{% static 'Houston/js/require.js' %}"></script>
 <script type="text/javascript">
+  window.houstonConfig = {
+    endpoints: {
+      'page-views': '{% url "view-counts" %}'
+    }
+  };
+
   requirejs.config({
     baseUrl: '{% static "Houston/js" %}',
     paths: {
-    '{{ bootstrap }}': '{% static "Houston/js/"|add:bootstrap|add:".js" %}'.split('.').slice(0,-1).join('.')
+      '{{ bootstrap }}': '{% static "Houston/js/"|add:bootstrap|add:".js" %}'.split('.').slice(0,-1).join('.'),
     }
   });
 

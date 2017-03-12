@@ -1,7 +1,10 @@
 ;(function() {
-  function wrap() {
-    alert('hai!');
+  function wrap(d3, ViewsChart) {
+    var viewsChart = new ViewsChart(d3.select('.views-chart'));
   }
 
-  define([], wrap);
+  define([
+    'd3',
+    'views-chart'
+  ], wrap);
 })();
