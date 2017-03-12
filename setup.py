@@ -27,7 +27,7 @@ class GulpBuild(distutils.cmd.Command):
         pass
 
     def finalize_options(self):
-        assert os.path.exists('Houston/static/Houston/js/tracker.js')
+        pass
 
     def run(self):
         wd = 'Houston/static-src'
@@ -40,8 +40,8 @@ class GulpBuild(distutils.cmd.Command):
         out, err = cmd.communicate()
 
         if cmd.returncode != 0:
-            print 'Return code was: %d' % cmd.returncode
-            print stderr
+            self.announce('Return code was: %d' % cmd.returncode,
+                          level=distutils.log.ERROR)
             assert cmd.returncode == 0
 
         self.announce('Running `gulp generate`', level=distutils.log.INFO)
@@ -52,8 +52,8 @@ class GulpBuild(distutils.cmd.Command):
         out, err = cmd.communicate()
 
         if cmd.returncode != 0:
-            print 'Return code was: %d' % cmd.returncode
-            print stderr
+            self.announce('Return code was: %d' % cmd.returncode,
+                          level=distutils.log.ERROR)
             assert cmd.returncode == 0
 
 setup(
