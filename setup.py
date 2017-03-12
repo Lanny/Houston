@@ -5,12 +5,18 @@ import distutils
 from setuptools import find_packages, setup
 from setuptools.command.build_py import build_py
 from setuptools.command.install import install
+from setuptools.command.egg_info import egg_info
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+class CustomEggInfo(egg_info):
+    def run(self):
+        self.run_command('gulp_build')
+        egg_info.run(self)
 
 class CustomInstall(install):
     def run(self):
@@ -84,6 +90,7 @@ setup(
     cmdclass={
         'build_py': CustomBuild,
         'gulp_build': GulpBuild,
-        'install': CustomInstall
+        'install': CustomInstall,
+        'egg_info': CustomEggInfo
     },
 )
