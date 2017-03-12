@@ -4,6 +4,7 @@ import distutils
 
 from setuptools import find_packages, setup
 from setuptools.command.build_py import build_py
+from setuptools.command.install import install
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
@@ -11,11 +12,15 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+class CustomInstall(install):
+    def run(self):
+        self.run_command('gulp_build')
+        install.run(self)
+
 class CustomBuild(build_py):
     def run(self):
         self.run_command('gulp_build')
         build_py.run(self)
-        print 'Done!'
 
 class GulpBuild(distutils.cmd.Command):
     def initialize_options(self):
@@ -28,12 +33,28 @@ class GulpBuild(distutils.cmd.Command):
         wd = 'Houston/static-src'
 
         self.announce('Running `npm install`', level=distutils.log.INFO)
-        cmd = subprocess.Popen(['npm', 'install'], cwd=wd)
-        cmd.wait()
+        cmd = subprocess.Popen(['npm', 'install'],
+                               cwd=wd,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+        out, err = cmd.communicate()
+
+        if cmd.returncode != 0:
+            print 'Return code was: %d' % cmd.returncode
+            print stderr
+            assert cmd.returncode == 0
 
         self.announce('Running `gulp generate`', level=distutils.log.INFO)
-        cmd = subprocess.Popen(['gulp', 'generate', '--optimize'], cwd=wd)
-        cmd.wait()
+        cmd = subprocess.Popen(['gulp', 'generate', '--optimize'],
+                                cwd=wd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+        out, err = cmd.communicate()
+
+        if cmd.returncode != 0:
+            print 'Return code was: %d' % cmd.returncode
+            print stderr
+            assert cmd.returncode == 0
 
 setup(
     name='django-houston',
@@ -62,6 +83,7 @@ setup(
     ],
     cmdclass={
         'build_py': CustomBuild,
-        'gulp_build': GulpBuild
+        'gulp_build': GulpBuild,
+        'install': CustomInstall
     },
 )
