@@ -47,8 +47,8 @@ def view_counts(request):
     granularity = form.cleaned_data['granularity']
 
     view_counts = (PageView.objects.all()
-        .filter(report_time__gte=start_time)
-        .filter(report_time__gte=end_time)
+        .filter(report_time__gte=start_time,
+                report_time__lte=end_time)
         .annotate(bucket=Trunc('report_time', kind=granularity))
         .values('bucket')
         .annotate(count=Count('bucket')))

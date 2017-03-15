@@ -12,6 +12,12 @@
         self._lines[name] = data;
         return self;
       },
+      clearLines: function() {
+        var self = this;
+        self._lines = {};
+        self._svg.selectAll('*').remove();
+        return self;
+      },
       render: function() {
         var self = this,
           margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -48,10 +54,9 @@
           .call(d3.axisBottom(x));
 
         g.append("g")
-          .call(d3.axisLeft(y))
+          .call(d3.axisLeft(y));
 
         for (lineName in self._lines) {
-          console.log(self._lines[lineName]);
           g.append("path")
             .datum(self._lines[lineName])
             .attr("fill", "none")

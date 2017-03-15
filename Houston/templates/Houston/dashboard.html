@@ -7,7 +7,19 @@
 {% block content %}
   <div class="dashboard">
     <div class="views-chart">
-      <svg class="chart" width="1200" height="600"></svg>
+      <svg class="chart" width="1200" height="600" viewBox="0 0 1200 600"></svg>
+
+      <select class="granularity">
+        <option value="hour">Hourly</option>
+        <option value="day" selected="selected">Daily</option>
+        <option value="month">Monthly</option>
+      </select>
+
+      <select class="time-period">
+        <option value="day">Last 24 Hours</option>
+        <option value="week" selected="selected">Last 7 Days</option>
+        <option value="month">Last 28 Days</option>
+      </select>
     </div>
   </div>
 {% endblock %}
