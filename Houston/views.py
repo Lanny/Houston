@@ -53,7 +53,8 @@ def view_counts(request):
                 report_time__lte=end_time)
         .annotate(bucket=Trunc('report_time', kind=granularity))
         .values('bucket')
-        .annotate(count=Count('bucket')))
+        .annotate(count=Count('bucket'))
+        .order_by('-bucket'))
 
     values = []
     for bucket in view_counts:
