@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import admin
 from django.views.generic import TemplateView
 
@@ -23,6 +24,7 @@ urlpatterns = [
     url(r'^record-view$', views.record_page_view, name='record-page-view'),
     url(r'^view-counts$', views.view_counts, name='view-counts'),
     url(r'^dashboard$',
-        TemplateView.as_view(template_name='Houston/dashboard.html'),
+        staff_member_required(
+            TemplateView.as_view(template_name='Houston/dashboard.html')),
         name='dashboard'),
 ]

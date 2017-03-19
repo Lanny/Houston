@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models.aggregates import Count
 from django.db.models.functions import Trunc
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -30,6 +31,7 @@ def record_page_view(request):
 
         return HttpResponse('success', content_type='text/plain')
 
+@staff_member_required
 def view_counts(request):
     form = forms.ViewCountsForm(request.GET)
 
