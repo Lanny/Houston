@@ -13,6 +13,8 @@
       'month': MONTH
     };
 
+    const datize = (d) => new Date(d * 1000);
+
     function formatDate(d) {
       return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() +
         ' ' + d.getHours() + ':' + d.getMinutes();
@@ -21,8 +23,6 @@
 
     function getEndTime(deltaName, startTime) {
       startTime = (startTime === undefined) ? new Date() : startTime;
-
-
     }
 
     function ViewsChart(container) {
@@ -84,13 +84,17 @@
         }).done(function(data) {
           var views = data.viewCounts.map(function(d) {
               return {
-                date: new Date(d.bucket * 1000),
+                date: datize(d.bucket),
                 value: d.count
               };
             });
 
           self._getChart()
             .clearLines()
+            .setXDomain([
+              datize(data.firstBucket),
+              datize(data.lastBucket)
+            ])
             .addLine('views', views)
             .render();
         });
@@ -107,4 +111,5 @@
     'line-chart'
   ], wrap);
 })();
+
 

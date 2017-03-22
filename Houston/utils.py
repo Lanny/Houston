@@ -17,3 +17,13 @@ def to_unix_time(aware_datetime):
 
     return int((aware_datetime - EPOCH).total_seconds())
 
+_blanks = {
+    'month': ('day', 'hour', 'minute', 'second', 'microsecond'),
+    'day': ('hour', 'minute', 'second', 'microsecond'),
+    'hour': ('minute', 'second', 'microsecond'),
+    'minute': ('second', 'microsecond'),
+}
+
+def truncate(dt, granularity):
+    return dt.replace(**dict([(field, 0) for field in _blanks[granularity]]))
+

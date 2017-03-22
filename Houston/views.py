@@ -48,7 +48,7 @@ def view_counts(request):
     end_time = form.cleaned_data['end_time']
     granularity = form.cleaned_data['granularity']
 
-    view_counts = (PageView.objects.all()
+    view_counts = list(PageView.objects.all()
         .filter(report_time__gte=start_time,
                 report_time__lte=end_time)
         .annotate(bucket=Trunc('report_time', kind=granularity))
@@ -65,5 +65,7 @@ def view_counts(request):
 
     return HttpResponse(json.dumps({
         'status': 'SUCCESS',
+        'firstBucket': utils.to_unix_time(utils.truncate(start_time, granularity)),
+        'lastBucket': utils.to_unix_time(utils.truncate(end_time, granularity)),
         'viewCounts': values
     }), content_type='application/json')

@@ -4,6 +4,7 @@
       var self = this;
       self._svg = svg;
       self._lines = {};
+      self._xDomain = null;
     }
 
     LineChart.prototype = {
@@ -18,6 +19,15 @@
         self._svg.selectAll('*').remove();
         return self;
       },
+      setXDomain: function(value) {
+        var self = this;
+        self._xDomain = value;
+        return self;
+      },
+      getXDomain: function() {
+        var self = this;
+        return self._xDomain
+      },
       render: function() {
         var self = this,
           margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -27,38 +37,27 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var x = d3.scaleTime().rangeRound([0, width]),
-          y = d3.scaleLinear().rangeRound([height, 0]);
-
-        var line = d3.line()
-            .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.value); });
-
-
-        var combinedDates = [],
-          combinedVals = [];
-
         for (var lineName in self._lines) {
-          var lineData = self._lines[lineName];
-          for (var i=0; i<lineData.length; i++) {
-            combinedDates.push(lineData[i].date);
-            combinedVals.push(lineData[i].value);
-          }
-        }
+          var lineData = self._lines[lineName],
+            x = d3.scaleTime().rangeRound([0, width]),
+            y = d3.scaleLinear().rangeRound([height, 0]);
 
-        x.domain(d3.extent(combinedDates));
-        y.domain(d3.extent(combinedVals));
+          var line = d3.line()
+              .x(function(d) { return x(d.date); })
+              .y(function(d) { return y(d.value); });
 
-        g.append("g")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x));
+          x.domain(self.getXDomain());
+          y.domain([0, d3.max(lineData, (d) => d.value)])
 
-        g.append("g")
-          .call(d3.axisLeft(y));
+          g.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
 
-        for (lineName in self._lines) {
+          g.append("g")
+            .call(d3.axisLeft(y));
+
           g.append("path")
-            .datum(self._lines[lineName])
+            .datum(lineData)
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-linejoin", "round")
