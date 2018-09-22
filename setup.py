@@ -1,9 +1,10 @@
+#!/usr/bin/env python
 import os
 import subprocess
 import distutils
 
 from setuptools import find_packages, setup
-from setuptools.command.build_py import build_py
+from setuptools.command.sdist import sdist
 from setuptools.command.install import install
 from setuptools.command.egg_info import egg_info
 
@@ -13,20 +14,10 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-class CustomEggInfo(egg_info):
+class CustomDist(sdist):
     def run(self):
         self.run_command('gulp_build')
-        egg_info.run(self)
-
-class CustomInstall(install):
-    def run(self):
-        self.run_command('gulp_build')
-        install.run(self)
-
-class CustomBuild(build_py):
-    def run(self):
-        self.run_command('gulp_build')
-        build_py.run(self)
+        sdist.run(self)
 
 class GulpBuild(distutils.cmd.Command):
     def initialize_options(self):
@@ -51,7 +42,9 @@ class GulpBuild(distutils.cmd.Command):
             assert cmd.returncode == 0
 
         self.announce('Running `gulp generate`', level=distutils.log.INFO)
-        cmd = subprocess.Popen(['gulp', 'generate', '--optimize'],
+        cmd = subprocess.Popen(['node_modules/gulp-cli/bin/gulp.js',
+                                'generate',
+                                '--optimize'],
                                 cwd=wd,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
@@ -64,7 +57,7 @@ class GulpBuild(distutils.cmd.Command):
 
 setup(
     name='django-houston',
-    version='0.1a',
+    version='0.1.0',
     packages=find_packages(exclude=('testsite',)),
     include_package_data=True,
     license='GPL v3.0',
@@ -88,9 +81,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     cmdclass={
-        'build_py': CustomBuild,
+        'sdist': CustomDist,
         'gulp_build': GulpBuild,
-        'install': CustomInstall,
-        'egg_info': CustomEggInfo
     },
 )
