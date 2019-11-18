@@ -55,9 +55,8 @@ gulp.task('optimize-js', ['javascript'], function() {
   });
 
   return gulp.src(optPaths)
-    .pipe(requirejsOptimize({ paths: { 'jquery': 'empty:' } }))
+    .pipe(requirejsOptimize())
     .pipe(gulp.dest('../static/js'))
-    .pipe(requirejsOptimize({ optimize: 'none' }))
     .pipe(flatten())
     .pipe(gulp.dest('../static/js'));
 });

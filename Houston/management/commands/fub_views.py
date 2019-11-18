@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         sessions = []
-        for _ in xrange(kwargs.get('k', 1)):
+        for _ in range(kwargs.get('k', 1)):
             session = Session()
             session.save()
             session.created = timezone.now() - timedelta(days=kwargs.get('j', 7))
@@ -33,7 +33,7 @@ class Command(BaseCommand):
             sessions.append((session, ip))
 
         secs = timedelta(days=kwargs.get('j', 7)).total_seconds()
-        for _ in xrange(kwargs.get('n', 0)):
+        for _ in range(kwargs.get('n', 0)):
             ctime = timezone.now() - timedelta(seconds=random.random()*secs)
             session, ip = random.choice(sessions)
 
