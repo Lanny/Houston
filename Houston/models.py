@@ -15,8 +15,15 @@ class PageView(models.Model):
 
     tt_load = models.IntegerField(null=True)
     req_time = models.IntegerField(null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
-    session = models.ForeignKey('Houston.Session', null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        on_delete=models.SET_NULL)
+
+    session = models.ForeignKey(
+        'Houston.Session',
+        null=True,
+        on_delete=models.CASCADE)
 
 class Session(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)

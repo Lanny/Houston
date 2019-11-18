@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('report_time', models.DateTimeField(default=django.utils.timezone.now)),
                 ('tt_load', models.IntegerField(null=True)),
                 ('req_time', models.IntegerField(null=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
         ),
     ]

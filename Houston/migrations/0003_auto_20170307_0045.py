@@ -22,6 +22,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pageview',
             name='session',
-            field=models.ForeignKey(to='Houston.Session', null=True),
+            field=models.ForeignKey(to='Houston.Session', null=True, on_delete=models.CASCADE),
         ),
     ]
