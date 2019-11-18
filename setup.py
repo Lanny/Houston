@@ -44,7 +44,7 @@ class GulpBuild(distutils.cmd.Command):
         self.announce('Running `gulp generate`', level=distutils.log.INFO)
         cmd = subprocess.Popen(['node_modules/gulp-cli/bin/gulp.js',
                                 'generate',
-                                '--optimize'],
+                                '--optimizeAssets'],
                                 cwd=wd,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
@@ -57,7 +57,7 @@ class GulpBuild(distutils.cmd.Command):
 
 setup(
     name='django-houston',
-    version='0.1.0',
+    version='0.2.0',
     packages=find_packages(exclude=('testsite',)),
     include_package_data=True,
     license='GPL v3.0',
