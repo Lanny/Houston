@@ -24,7 +24,7 @@ def record_page_view(request):
             path=form.cleaned_data['path'],
             session=Session.get_session(request))
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             view.user = request.user
 
         view.save()
